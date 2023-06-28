@@ -37,7 +37,7 @@ public class VnApplication {
 					System.out.println("LanguageAnalyzer Results:");
 					List<Country> countries = LanguageAnalyzer.parseJson(JSON);
 					int totalCountries = LanguageAnalyzer.getTotalCountries(countries);
-					Country countryWithMostLanguages = LanguageAnalyzer.getCountryWithMostLanguages(countries, "en");
+					Country countryWithMostLanguages = LanguageAnalyzer.getCountryWithMostLanguages(countries, "de");
 					int totalLanguages = LanguageAnalyzer.countTotalLanguages(countries);
 					Country countryWithHighestLanguages = LanguageAnalyzer.getCountryWithHighestLanguages(countries);
 					List<String> mostCommonLanguages = LanguageAnalyzer.getMostCommonLanguages(countries);
