@@ -4,7 +4,7 @@
  - To run tests use the Maven Terminal by typing 'mvn test' and pressing Ctrl + Enter
 
 
-### Regarding the question about Question 1:
+### Regarding the question about Exercise 1:
 
 To ensure that the code remains secure against bugs and performs well with minor feature adjustments, you can follow these best practices:
 
