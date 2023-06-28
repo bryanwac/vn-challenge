@@ -5,6 +5,7 @@ import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class LanguageAnalyzer {
 
@@ -19,66 +20,40 @@ public class LanguageAnalyzer {
     }
 
     public static Country getCountryWithMostLanguages(List<Country> countries, String language) {
-        Country countryWithMostLanguages = null;
-        int maxLanguages = 0;
-
-        for (Country country : countries) {
-            if (country.languages().contains(language) && country.languages().size() > maxLanguages) {
-                countryWithMostLanguages = country;
-                maxLanguages = country.languages().size();
-            }
-        }
-
-        return countryWithMostLanguages;
+        return countries.stream()
+                .filter(country -> country.languages().contains(language))
+                .max(Comparator.comparingInt(country -> country.languages().size()))
+                .orElse(null);
     }
 
     public static int countTotalLanguages(List<Country> countries) {
-        Set<String> allLanguages = new HashSet<>();
-
-        for (Country country : countries) {
-            allLanguages.addAll(country.languages());
-        }
-
-        return allLanguages.size();
+        return countries.stream()
+                .flatMap(country -> country.languages().stream())
+                .collect(Collectors.toSet())
+                .size();
     }
 
     public static Country getCountryWithHighestLanguages(List<Country> countries) {
-        Country countryWithHighestLanguages = null;
-        int maxLanguages = 0;
-
-        for (Country country : countries) {
-            if (country.languages().size() > maxLanguages) {
-                countryWithHighestLanguages = country;
-                maxLanguages = country.languages().size();
-            }
-        }
-
-        return countryWithHighestLanguages;
+        return countries.stream()
+                .max(Comparator.comparingInt(country -> country.languages().size()))
+                .orElse(null);
     }
 
     public static List<String> getMostCommonLanguages(List<Country> countries) {
         Map<String, Integer> languageCount = new HashMap<>();
 
-        for (Country country : countries) {
-            for (String language : country.languages()) {
-                languageCount.put(language, languageCount.getOrDefault(language, 0) + 1);
-            }
-        }
+        countries.forEach(country ->
+                country.languages().forEach(language ->
+                        languageCount.put(language, languageCount.getOrDefault(language, 0) + 1))
+        );
 
-        int maxCount = 0;
-        for (int count : languageCount.values()) {
-            if (count > maxCount) {
-                maxCount = count;
-            }
-        }
+        int maxCount = languageCount.values().stream()
+                .max(Comparator.naturalOrder())
+                .orElse(0);
 
-        List<String> mostCommonLanguages = new ArrayList<>();
-        for (Map.Entry<String, Integer> entry : languageCount.entrySet()) {
-            if (entry.getValue() == maxCount) {
-                mostCommonLanguages.add(entry.getKey());
-            }
-        }
-
-        return mostCommonLanguages;
+        return languageCount.entrySet().stream()
+                .filter(entry -> entry.getValue() == maxCount)
+                .map(Map.Entry::getKey)
+                .collect(Collectors.toList());
     }
 }

@@ -78,5 +78,21 @@ public class LanguageAnalyzerTest {
         Assertions.assertEquals("BE", countryWithHighestLanguages.country());
     }
 
+    @Test
+    public void testGetMostCommonLanguages() {
+        List<Country> countries = Arrays.asList(
+                new Country("US", Arrays.asList("en")),
+                new Country("BE", Arrays.asList("nl", "fr", "de")),
+                new Country("NL", Arrays.asList("nl", "fy")),
+                new Country("DE", Arrays.asList("de", "en")),
+                new Country("ES", Arrays.asList("es", "en", "fr")),
+                new Country("FR", Arrays.asList("fr", "en")),
+                new Country("IT", Arrays.asList("it", "en")),
+                new Country("RU", Arrays.asList("ru"))
+        );
 
+        List<String> mostCommonLanguages = LanguageAnalyzer.getMostCommonLanguages(countries);
+
+        Assertions.assertEquals(List.of("en"), mostCommonLanguages);
+    }
 }
